@@ -1,24 +1,235 @@
 
 
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bruno's Delivery Online</title>
-    <style>
-        body { font-family: sans-serif; background: #f4f4f4; text-align: center; padding: 20px; }
-        .card { background: white; border-radius: 10px; padding: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); max-width: 300px; margin: auto; }
-        h1 { color: #e67e22; }
-        button { background: #27ae60; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; }
-    </style>
+  <meta charset="UTF-8" />
+  <title>Delivery App</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Inter", system-ui, sans-serif;
+    }
+
+    body {
+      background: #f7f7f7;
+      color: #222;
+    }
+
+    header {
+      background: #fff;
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    header h1 {
+      color: #e53935;
+      font-size: 1.5rem;
+    }
+
+    header input {
+      flex: 1;
+      padding: 0.7rem 1rem;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+      font-size: 0.95rem;
+    }
+
+    main {
+      display: grid;
+      grid-template-columns: 3fr 1fr;
+      gap: 2rem;
+      padding: 2rem;
+    }
+
+    h2 {
+      margin-bottom: 1rem;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+      transition: transform 0.2s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+    }
+
+    .card img {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+    }
+
+    .info {
+      padding: 1rem;
+    }
+
+    .info h3 {
+      margin-bottom: 0.3rem;
+    }
+
+    .info p {
+      color: #777;
+      font-size: 0.9rem;
+    }
+
+    .info button {
+      margin-top: 0.8rem;
+      width: 100%;
+      padding: 0.6rem;
+      border: none;
+      border-radius: 8px;
+      background: #e53935;
+      color: #fff;
+      cursor: pointer;
+      font-size: 0.95rem;
+    }
+
+    .info button:hover {
+      background: #d32f2f;
+    }
+
+    aside {
+      background: #fff;
+      padding: 1.2rem;
+      border-radius: 14px;
+      height: fit-content;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+      position: sticky;
+      top: 90px;
+    }
+
+    aside ul {
+      list-style: none;
+      margin: 1rem 0;
+    }
+
+    aside li {
+      padding: 0.5rem 0;
+      border-bottom: 1px solid #eee;
+      font-size: 0.95rem;
+    }
+
+    .checkout {
+      width: 100%;
+      padding: 0.7rem;
+      background: #2e7d32;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+
+    .checkout:hover {
+      background: #256428;
+    }
+
+    @media (max-width: 900px) {
+      main {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
+
 <body>
-    <h1>🍕 Meu Delivery no Azure</h1>
-    <div class="card">
-        <h3>Pizza de Calabresa</h3>
-        <p>R$ 45,00</p>
-        <button onclick="alert('Pedido enviado para o Python!')">Pedir Agora</button>
+
+<header>
+  <h1>🍔 Delivery</h1>
+  <input type="text" placeholder="Buscar restaurantes ou pratos..." />
+</header>
+
+<main>
+  <section>
+    <h2>Restaurantes</h2>
+
+    <div class="cards">
+      <div class="card">
+        <img src="https://images.unsplash.com/photo-1555992336-03a23c3fcd39" />
+        <div class="info">
+          <h3>Burger House</h3>
+          <p>⭐ 4.8 • 30–40 min</p>
+          <button onclick="addToCart('Burger House')">Adicionar</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <img src="https://images.unsplash.com/photo-1540189549336-e6e99c3679fe" />
+        <div class="info">
+          <h3>Pizzaria Itália</h3>
+          <p>⭐ 4.6 • 25–35 min</p>
+          <button onclick="addToCart('Pizzaria Itália')">Adicionar</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836" />
+        <div class="info">
+          <h3>Sushi Prime</h3>
+          <p>⭐ 4.9 • 40–50 min</p>
+          <button onclick="addToCart('Sushi Prime')">Adicionar</button>
+        </div>
+      </div>
     </div>
+  </section>
+
+  <aside>
+    <h2>🛒 Carrinho</h2>
+    <ul id="cart-items"></ul>
+    <button class="checkout" onclick="checkout()">Finalizar pedido</button>
+  </aside>
+</main>
+
+<script>
+  const cart = [];
+
+  function addToCart(item) {
+    cart.push(item);
+    renderCart();
+  }
+
+  function renderCart() {
+    const list = document.getElementById("cart-items");
+    list.innerHTML = "";
+
+    cart.forEach((item, index) => {
+      const li = document.createElement("li");
+      li.textContent = item;
+      list.appendChild(li);
+    });
+  }
+
+  function checkout() {
+    if (cart.length === 0) {
+      alert("Seu carrinho está vazio!");
+      return;
+    }
+    alert("Pedido enviado com sucesso 🚀");
+    cart.length = 0;
+    renderCart();
+  }
+</script>
+
 </body>
 </html>
