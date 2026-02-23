@@ -2,192 +2,291 @@
 
 
 
-import { useState } from 'react'
-import {
-  ShoppingCart, MapPin, Search, Menu, X,
-  Star, Clock, Plus, Minus, Trash2, Truck
-} from 'lucide-react'
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>PontoaPonto Delivery</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-/* ================= NAVBAR ================= */
-function Navbar({ cartCount, onCartClick }) {
-  const [menuOpen, setMenuOpen] = useState(false)
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
 
-  return (
-    <nav className="bg-[#e8232a] text-white sticky top-0 z-50 shadow-lg">
-      <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
-        <span className="text-2xl font-extrabold">
-          Ponto<span className="text-yellow-300">a</span>Ponto
-        </span>
+  <!-- Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
 
-        <div className="hidden md:flex flex-1 max-w-md mx-auto relative">
-          <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-          <input
-            placeholder="Buscar restaurantes ou pratos..."
-            className="w-full pl-9 pr-4 py-2 rounded-full text-gray-800 text-sm"
-          />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0 }
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: #f5f5f5;
+      color: #222;
+    }
+
+    /* NAVBAR */
+    header {
+      background: #e8232a;
+      color: #fff;
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    header h1 {
+      font-size: 22px;
+      font-weight: 900;
+    }
+
+    header button {
+      background: #facc15;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 999px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    /* HERO */
+    .hero {
+      background: linear-gradient(135deg, #e8232a, #b91c1c);
+      color: #fff;
+      padding: 40px 20px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 30px;
+    }
+
+    .hero-text {
+      flex: 1;
+    }
+
+    .hero h2 {
+      font-size: 36px;
+      font-weight: 900;
+      margin-bottom: 10px;
+    }
+
+    .hero p {
+      opacity: 0.9;
+      margin-bottom: 20px;
+    }
+
+    .hero img {
+      width: 260px;
+      border-radius: 20px;
+      box-shadow: 0 20px 40px rgba(0,0,0,.3);
+    }
+
+    /* CATEGORIES */
+    .categories {
+      display: flex;
+      gap: 15px;
+      padding: 20px;
+      overflow-x: auto;
+    }
+
+    .category {
+      background: #fff;
+      border-radius: 14px;
+      padding: 10px;
+      min-width: 110px;
+      text-align: center;
+      cursor: pointer;
+      box-shadow: 0 5px 15px rgba(0,0,0,.08);
+    }
+
+    .category img {
+      width: 100%;
+      height: 70px;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+
+    .category span {
+      display: block;
+      margin-top: 6px;
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    /* PRODUCTS */
+    .products {
+      padding: 20px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 10px 25px rgba(0,0,0,.08);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card img {
+      height: 150px;
+      width: 100%;
+      object-fit: cover;
+    }
+
+    .card-body {
+      padding: 14px;
+      flex: 1;
+    }
+
+    .card h3 {
+      font-size: 16px;
+      margin-bottom: 6px;
+    }
+
+    .price {
+      color: #e8232a;
+      font-weight: 900;
+      margin-bottom: 10px;
+    }
+
+    .card button {
+      background: #e8232a;
+      color: #fff;
+      border: none;
+      padding: 10px;
+      border-radius: 999px;
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+    /* CART */
+    .cart {
+      position: fixed;
+      top: 0;
+      right: -100%;
+      width: 320px;
+      height: 100%;
+      background: #fff;
+      box-shadow: -10px 0 30px rgba(0,0,0,.2);
+      transition: .3s;
+      display: flex;
+      flex-direction: column;
+      z-index: 200;
+    }
+
+    .cart.open { right: 0 }
+
+    .cart-header {
+      background: #e8232a;
+      color: #fff;
+      padding: 16px;
+      font-weight: 900;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .cart-items {
+      flex: 1;
+      overflow-y: auto;
+      padding: 14px;
+    }
+
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      font-size: 14px;
+    }
+
+    .cart-footer {
+      padding: 14px;
+      border-top: 1px solid #eee;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Ponto<span style="color:#facc15">a</span>Ponto</h1>
+  <button onclick="toggleCart()">Carrinho (<span id="cartCount">0</span>)</button>
+</header>
+
+<section class="hero">
+  <div class="hero-text">
+    <h2>Entrega grátis<br>no primeiro pedido</h2>
+    <p>Os melhores restaurantes entregues rápido na sua casa.</p>
+  </div>
+  <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=500&q=80">
+</section>
+
+<section class="categories">
+  <div class="category"><img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=300"><span>Hambúrguer</span></div>
+  <div class="category"><img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=300"><span>Pizza</span></div>
+  <div class="category"><img src="https://images.unsplash.com/photo-1544025162-d76694265947?w=300"><span>Churrasco</span></div>
+</section>
+
+<section class="products" id="products"></section>
+
+<div class="cart" id="cart">
+  <div class="cart-header">
+    Meu Carrinho
+    <button onclick="toggleCart()">✕</button>
+  </div>
+  <div class="cart-items" id="cartItems"></div>
+  <div class="cart-footer">
+    <strong>Total: R$ <span id="total">0.00</span></strong>
+  </div>
+</div>
+
+<script>
+  const products = [
+    { id: 1, name: 'Burger Smash', price: 28.90, img: 'https://images.unsplash.com/photo-1553979459-d2229ba7433b?w=400' },
+    { id: 2, name: 'Pizza Pepperoni', price: 42.90, img: 'https://images.unsplash.com/photo-1628840042765-356cda07504e?w=400' },
+    { id: 3, name: 'Picanha Grelhada', price: 68.90, img: 'https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?w=400' }
+  ]
+
+  const cart = []
+  const productsEl = document.getElementById('products')
+
+  products.forEach(p => {
+    productsEl.innerHTML += `
+      <div class="card">
+        <img src="${p.img}">
+        <div class="card-body">
+          <h3>${p.name}</h3>
+          <div class="price">R$ ${p.price.toFixed(2)}</div>
+          <button onclick="addToCart(${p.id})">Adicionar no carrinho</button>
         </div>
-
-        <button
-          onClick={onCartClick}
-          className="relative bg-yellow-400 text-gray-900 font-bold rounded-full px-4 py-2 flex items-center gap-2"
-        >
-          <ShoppingCart size={18} />
-          Carrinho
-          {cartCount > 0 && (
-            <span className="absolute -top-2 -right-2 bg-white text-[#e8232a] text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center">
-              {cartCount}
-            </span>
-          )}
-        </button>
-
-        <button className="md:hidden" onClick={() => setMenuOpen(!menuOpen)}>
-          {menuOpen ? <X /> : <Menu />}
-        </button>
       </div>
-    </nav>
-  )
-}
+    `
+  })
 
-/* ================= HERO ================= */
-function HeroBanner() {
-  return (
-    <section className="bg-gradient-to-r from-[#e8232a] to-[#c91e25] text-white py-14">
-      <div className="max-w-7xl mx-auto px-4 grid md:grid-cols-2 gap-8 items-center">
-        <div>
-          <h1 className="text-4xl font-extrabold mb-4">
-            Entrega grátis <br /> no seu primeiro pedido
-          </h1>
-          <p className="text-white/80 mb-6">
-            Os melhores restaurantes entregues rápido na sua casa.
-          </p>
-          <button className="bg-yellow-400 text-gray-900 font-bold px-6 py-3 rounded-full">
-            Pedir agora
-          </button>
-        </div>
-
-        <img
-          src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=600"
-          className="rounded-3xl shadow-xl"
-        />
-      </div>
-    </section>
-  )
-}
-
-/* ================= PRODUTOS ================= */
-const foods = [
-  {
-    id: 1,
-    name: 'Hambúrguer Artesanal',
-    price: 28.9,
-    image: 'https://images.unsplash.com/photo-1553979459-d2229ba7433b?w=400',
-  },
-  {
-    id: 2,
-    name: 'Pizza Pepperoni',
-    price: 42.9,
-    image: 'https://images.unsplash.com/photo-1628840042765-356cda07504e?w=400',
-  },
-  {
-    id: 3,
-    name: 'Churrasco Completo',
-    price: 64.9,
-    image: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=400',
-  },
-]
-
-function FoodList({ addToCart }) {
-  return (
-    <section className="max-w-7xl mx-auto px-4 py-12 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      {foods.map(item => (
-        <div key={item.id} className="bg-white rounded-2xl shadow p-4 flex flex-col">
-          <img src={item.image} className="rounded-xl h-40 object-cover mb-3" />
-          <h3 className="font-bold">{item.name}</h3>
-          <span className="text-[#e8232a] font-extrabold text-lg">
-            R$ {item.price.toFixed(2).replace('.', ',')}
-          </span>
-          <button
-            onClick={() => addToCart(item)}
-            className="mt-auto bg-[#e8232a] text-white font-bold py-2 rounded-full mt-4"
-          >
-            Adicionar no carrinho
-          </button>
-        </div>
-      ))}
-    </section>
-  )
-}
-
-/* ================= CARRINHO ================= */
-function Cart({ open, onClose, items, updateQty, remove }) {
-  const total = items.reduce((s, i) => s + i.price * i.qty, 0)
-
-  return (
-    <>
-      {open && <div onClick={onClose} className="fixed inset-0 bg-black/50 z-40" />}
-
-      <aside className={`fixed top-0 right-0 h-full w-96 bg-white z-50 transition-transform ${open ? 'translate-x-0' : 'translate-x-full'}`}>
-        <div className="p-4 flex justify-between items-center border-b">
-          <h2 className="font-extrabold text-lg">Meu Carrinho</h2>
-          <button onClick={onClose}><X /></button>
-        </div>
-
-        <div className="p-4 space-y-3 flex-1 overflow-y-auto">
-          {items.map(item => (
-            <div key={item.id} className="flex gap-3 items-center">
-              <img src={item.image} className="w-14 h-14 rounded-lg object-cover" />
-              <div className="flex-1">
-                <div className="font-bold">{item.name}</div>
-                <div className="text-sm">R$ {(item.price * item.qty).toFixed(2)}</div>
-                <div className="flex gap-2 mt-1">
-                  <button onClick={() => updateQty(item.id, -1)}><Minus size={14} /></button>
-                  {item.qty}
-                  <button onClick={() => updateQty(item.id, 1)}><Plus size={14} /></button>
-                </div>
-              </div>
-              <button onClick={() => remove(item.id)}>
-                <Trash2 size={16} />
-              </button>
-            </div>
-          ))}
-        </div>
-
-        <div className="p-4 border-t">
-          <div className="font-extrabold mb-3">Total: R$ {total.toFixed(2)}</div>
-          <button className="w-full bg-[#e8232a] text-white py-3 rounded-full font-bold">
-            Finalizar pedido
-          </button>
-        </div>
-      </aside>
-    </>
-  )
-}
-
-/* ================= APP ================= */
-export default function App() {
-  const [cart, setCart] = useState([])
-  const [open, setOpen] = useState(false)
-
-  const addToCart = item => {
-    setCart(prev => {
-      const exists = prev.find(i => i.id === item.id)
-      return exists
-        ? prev.map(i => i.id === item.id ? { ...i, qty: i.qty + 1 } : i)
-        : [...prev, { ...item, qty: 1 }]
-    })
+  function addToCart(id) {
+    const item = products.find(p => p.id === id)
+    cart.push(item)
+    renderCart()
   }
 
-  const updateQty = (id, d) =>
-    setCart(prev => prev.map(i => i.id === id ? { ...i, qty: Math.max(1, i.qty + d) } : i))
+  function renderCart() {
+    const cartItems = document.getElementById('cartItems')
+    cartItems.innerHTML = ''
+    let total = 0
+    cart.forEach(i => {
+      total += i.price
+      cartItems.innerHTML += `<div class="cart-item"><span>${i.name}</span><span>R$ ${i.price.toFixed(2)}</span></div>`
+    })
+    document.getElementById('total').innerText = total.toFixed(2)
+    document.getElementById('cartCount').innerText = cart.length
+  }
 
-  const remove = id => setCart(prev => prev.filter(i => i.id !== id))
+  function toggleCart() {
+    document.getElementById('cart').classList.toggle('open')
+  }
+</script>
 
-  return (
-    <div className="bg-gray-100 min-h-screen">
-      <Navbar cartCount={cart.reduce((s, i) => s + i.qty, 0)} onCartClick={() => setOpen(true)} />
-      <HeroBanner />
-      <FoodList addToCart={addToCart} />
-      <Cart open={open} onClose={() => setOpen(false)} items={cart} updateQty={updateQty} remove={remove} />
-    </div>
-  )
-}
+</body>
+</html>
