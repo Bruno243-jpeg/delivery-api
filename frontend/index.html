@@ -1,10 +1,12 @@
 
 
+
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <title>Delivery App</title>
+  <title>PontoaPonto • Delivery</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
@@ -34,7 +36,7 @@
 
     header h1 {
       color: #e53935;
-      font-size: 1.5rem;
+      font-size: 1.6rem;
     }
 
     header input {
@@ -50,6 +52,10 @@
       grid-template-columns: 3fr 1fr;
       gap: 2rem;
       padding: 2rem;
+    }
+
+    section {
+      margin-bottom: 2.5rem;
     }
 
     h2 {
@@ -156,44 +162,88 @@
 <body>
 
 <header>
-  <h1>🍔 Delivery</h1>
-  <input type="text" placeholder="Buscar restaurantes ou pratos..." />
+  <h1>📍 PontoaPonto</h1>
+  <input type="text" placeholder="Buscar pratos ou categorias..." />
 </header>
 
 <main>
-  <section>
-    <h2>Restaurantes</h2>
+  <div>
 
-    <div class="cards">
-      <div class="card">
-        <img src="https://images.unsplash.com/photo-1555992336-03a23c3fcd39" />
-        <div class="info">
-          <h3>Burger House</h3>
-          <p>⭐ 4.8 • 30–40 min</p>
-          <button onclick="addToCart('Burger House')">Adicionar</button>
+    <!-- CHURRASCO -->
+    <section>
+      <h2>🍖 Churrasco</h2>
+      <div class="cards">
+        <div class="card">
+          <img src="https://images.unsplash.com/photo-1558030006-450675393462">
+          <div class="info">
+            <h3>Picanha na Brasa</h3>
+            <p>⭐ 4.9 • 40–50 min</p>
+            <button onclick="addToCart('Picanha na Brasa')">Adicionar</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <img src="https://images.unsplash.com/photo-1529692236671-f1dcbe57a37a">
+          <div class="info">
+            <h3>Costela Premium</h3>
+            <p>⭐ 4.8 • 45–55 min</p>
+            <button onclick="addToCart('Costela Premium')">Adicionar</button>
+          </div>
         </div>
       </div>
+    </section>
 
-      <div class="card">
-        <img src="https://images.unsplash.com/photo-1540189549336-e6e99c3679fe" />
-        <div class="info">
-          <h3>Pizzaria Itália</h3>
-          <p>⭐ 4.6 • 25–35 min</p>
-          <button onclick="addToCart('Pizzaria Itália')">Adicionar</button>
+    <!-- CAFÉ DA MANHÃ -->
+    <section>
+      <h2>☕ Café da Manhã</h2>
+      <div class="cards">
+        <div class="card">
+          <img src="https://images.unsplash.com/photo-1504754524776-8f4f37790ca0">
+          <div class="info">
+            <h3>Café Completo</h3>
+            <p>⭐ 4.7 • 15–25 min</p>
+            <button onclick="addToCart('Café Completo')">Adicionar</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <img src="https://images.unsplash.com/photo-1550583724-b2692b85b150">
+          <div class="info">
+            <h3>Pão & Café</h3>
+            <p>⭐ 4.6 • 10–20 min</p>
+            <button onclick="addToCart('Pão & Café')">Adicionar</button>
+          </div>
         </div>
       </div>
+    </section>
 
-      <div class="card">
-        <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836" />
-        <div class="info">
-          <h3>Sushi Prime</h3>
-          <p>⭐ 4.9 • 40–50 min</p>
-          <button onclick="addToCart('Sushi Prime')">Adicionar</button>
+    <!-- AÇAÍ -->
+    <section>
+      <h2>🍧 Açaí</h2>
+      <div class="cards">
+        <div class="card">
+          <img src="https://images.unsplash.com/photo-1626776876729-bab436b26c6b">
+          <div class="info">
+            <h3>Açaí Tradicional</h3>
+            <p>⭐ 4.9 • 15–25 min</p>
+            <button onclick="addToCart('Açaí Tradicional')">Adicionar</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <img src="https://images.unsplash.com/photo-1612197527276-1c4a09cbb8b1">
+          <div class="info">
+            <h3>Açaí com Frutas</h3>
+            <p>⭐ 4.8 • 15–25 min</p>
+            <button onclick="addToCart('Açaí com Frutas')">Adicionar</button>
+          </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
+  </div>
+
+  <!-- CARRINHO -->
   <aside>
     <h2>🛒 Carrinho</h2>
     <ul id="cart-items"></ul>
@@ -213,7 +263,7 @@
     const list = document.getElementById("cart-items");
     list.innerHTML = "";
 
-    cart.forEach((item, index) => {
+    cart.forEach(item => {
       const li = document.createElement("li");
       li.textContent = item;
       list.appendChild(li);
