@@ -1,19 +1,15 @@
 
+      
 
 
-
-<!DOCTYPE html>
+      <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
   <title>PontoaPonto Delivery</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <!-- Google Font -->
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
-
-  <!-- Icons -->
-  <script src="https://unpkg.com/lucide@latest"></script>
 
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0 }
@@ -23,14 +19,13 @@
       color: #222;
     }
 
-    /* NAVBAR */
     header {
       background: #e8232a;
       color: #fff;
       padding: 14px 20px;
       display: flex;
-      align-items: center;
       justify-content: space-between;
+      align-items: center;
       position: sticky;
       top: 0;
       z-index: 100;
@@ -50,7 +45,6 @@
       cursor: pointer;
     }
 
-    /* HERO */
     .hero {
       background: linear-gradient(135deg, #e8232a, #b91c1c);
       color: #fff;
@@ -61,19 +55,10 @@
       gap: 30px;
     }
 
-    .hero-text {
-      flex: 1;
-    }
-
     .hero h2 {
       font-size: 36px;
       font-weight: 900;
       margin-bottom: 10px;
-    }
-
-    .hero p {
-      opacity: 0.9;
-      margin-bottom: 20px;
     }
 
     .hero img {
@@ -82,7 +67,6 @@
       box-shadow: 0 20px 40px rgba(0,0,0,.3);
     }
 
-    /* CATEGORIES */
     .categories {
       display: flex;
       gap: 15px;
@@ -96,7 +80,6 @@
       padding: 10px;
       min-width: 110px;
       text-align: center;
-      cursor: pointer;
       box-shadow: 0 5px 15px rgba(0,0,0,.08);
     }
 
@@ -107,14 +90,6 @@
       border-radius: 10px;
     }
 
-    .category span {
-      display: block;
-      margin-top: 6px;
-      font-weight: 700;
-      font-size: 14px;
-    }
-
-    /* PRODUCTS */
     .products {
       padding: 20px;
       display: grid;
@@ -142,11 +117,6 @@
       flex: 1;
     }
 
-    .card h3 {
-      font-size: 16px;
-      margin-bottom: 6px;
-    }
-
     .price {
       color: #e8232a;
       font-weight: 900;
@@ -161,9 +131,9 @@
       border-radius: 999px;
       cursor: pointer;
       font-weight: 700;
+      width: 100%;
     }
 
-    /* CART */
     .cart {
       position: fixed;
       top: 0;
@@ -191,23 +161,36 @@
 
     .cart-items {
       flex: 1;
-      overflow-y: auto;
       padding: 14px;
+      overflow-y: auto;
     }
 
     .cart-item {
       display: flex;
       justify-content: space-between;
       margin-bottom: 10px;
-      font-size: 14px;
     }
 
     .cart-footer {
       padding: 14px;
       border-top: 1px solid #eee;
     }
+
+    .checkout {
+      margin-top: 12px;
+      width: 100%;
+      padding: 14px;
+      background: #e8232a;
+      color: #fff;
+      border: none;
+      border-radius: 999px;
+      font-weight: 900;
+      cursor: pointer;
+      display: none;
+    }
   </style>
 </head>
+
 <body>
 
 <header>
@@ -216,17 +199,11 @@
 </header>
 
 <section class="hero">
-  <div class="hero-text">
+  <div>
     <h2>Entrega grátis<br>no primeiro pedido</h2>
-    <p>Os melhores restaurantes entregues rápido na sua casa.</p>
+    <p>Os melhores restaurantes na sua casa</p>
   </div>
   <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=500&q=80">
-</section>
-
-<section class="categories">
-  <div class="category"><img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=300"><span>Hambúrguer</span></div>
-  <div class="category"><img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=300"><span>Pizza</span></div>
-  <div class="category"><img src="https://images.unsplash.com/photo-1544025162-d76694265947?w=300"><span>Churrasco</span></div>
 </section>
 
 <section class="products" id="products"></section>
@@ -236,9 +213,14 @@
     Meu Carrinho
     <button onclick="toggleCart()">✕</button>
   </div>
+
   <div class="cart-items" id="cartItems"></div>
+
   <div class="cart-footer">
     <strong>Total: R$ <span id="total">0.00</span></strong>
+    <button class="checkout" id="checkoutBtn" onclick="finalizarPedido()">
+      Finalizar pedido
+    </button>
   </div>
 </div>
 
@@ -265,6 +247,10 @@
     `
   })
 
+  function toggleCart() {
+    document.getElementById('cart').classList.toggle('open')
+  }
+
   function addToCart(id) {
     const item = products.find(p => p.id === id)
     cart.push(item)
@@ -273,18 +259,33 @@
 
   function renderCart() {
     const cartItems = document.getElementById('cartItems')
+    const totalEl = document.getElementById('total')
+    const countEl = document.getElementById('cartCount')
+    const checkoutBtn = document.getElementById('checkoutBtn')
+
     cartItems.innerHTML = ''
     let total = 0
-    cart.forEach(i => {
-      total += i.price
-      cartItems.innerHTML += `<div class="cart-item"><span>${i.name}</span><span>R$ ${i.price.toFixed(2)}</span></div>`
+
+    cart.forEach(item => {
+      total += item.price
+      cartItems.innerHTML += `
+        <div class="cart-item">
+          <span>${item.name}</span>
+          <span>R$ ${item.price.toFixed(2)}</span>
+        </div>
+      `
     })
-    document.getElementById('total').innerText = total.toFixed(2)
-    document.getElementById('cartCount').innerText = cart.length
+
+    totalEl.innerText = total.toFixed(2)
+    countEl.innerText = cart.length
+    checkoutBtn.style.display = cart.length ? 'block' : 'none'
   }
 
-  function toggleCart() {
-    document.getElementById('cart').classList.toggle('open')
+  function finalizarPedido() {
+    alert('Pedido finalizado pra vc 🚀')
+    cart.length = 0
+    renderCart()
+    toggleCart()
   }
 </script>
 
