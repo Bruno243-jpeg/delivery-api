@@ -5,280 +5,205 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <title>PontoaPonto • Delivery</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<title>PontoaPonto • Delivery</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: "Inter", system-ui, sans-serif;
-    }
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Inter, system-ui, sans-serif;
+}
 
-    body {
-      background: #f7f7f7;
-      color: #222;
-    }
+body {
+  background: #f7f7f7;
+  color: #222;
+}
 
-    header {
-      background: #fff;
-      padding: 1rem 2rem;
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-      position: sticky;
-      top: 0;
-      z-index: 10;
-    }
+/* SPLASH (FAKE VIDEO) */
+#splash {
+  position: fixed;
+  inset: 0;
+  background: #000;
+  z-index: 9999;
+}
 
-    header h1 {
-      color: #e53935;
-      font-size: 1.6rem;
-    }
+.splash-slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  animation: splashAnimation 3s infinite;
+}
 
-    header input {
-      flex: 1;
-      padding: 0.7rem 1rem;
-      border-radius: 8px;
-      border: 1px solid #ddd;
-      font-size: 0.95rem;
-    }
+.splash-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
 
-    main {
-      display: grid;
-      grid-template-columns: 3fr 1fr;
-      gap: 2rem;
-      padding: 2rem;
-    }
+/* Cada imagem entra em sequência */
+.splash-slide:nth-child(1) { animation-delay: 0s; }
+.splash-slide:nth-child(2) { animation-delay: 1s; }
+.splash-slide:nth-child(3) { animation-delay: 2s; }
 
-    section {
-      margin-bottom: 2.5rem;
-    }
+@keyframes splashAnimation {
+  0% { opacity: 0; }
+  10% { opacity: 1; }
+  30% { opacity: 1; }
+  40% { opacity: 0; }
+  100% { opacity: 0; }
+}
 
-    h2 {
-      margin-bottom: 1rem;
-    }
+/* APP */
+#app {
+  display: none;
+}
 
-    .cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-      gap: 1.5rem;
-    }
+/* HEADER */
+header {
+  background: #fff;
+  padding: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
 
-    .card {
-      background: #fff;
-      border-radius: 14px;
-      overflow: hidden;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.08);
-      transition: transform 0.2s ease;
-    }
+header h1 {
+  color: #e53935;
+  margin-bottom: .5rem;
+}
 
-    .card:hover {
-      transform: translateY(-4px);
-    }
+header input {
+  width: 100%;
+  padding: .7rem 1rem;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+}
 
-    .card img {
-      width: 100%;
-      height: 160px;
-      object-fit: cover;
-    }
+/* BANNERS */
+.banner {
+  margin: 1.5rem;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 6px 20px rgba(0,0,0,.08);
+}
 
-    .info {
-      padding: 1rem;
-    }
+.banner img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
 
-    .info h3 {
-      margin-bottom: 0.3rem;
-    }
+/* CATEGORIES */
+.categories {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  padding: 1rem;
+}
 
-    .info p {
-      color: #777;
-      font-size: 0.9rem;
-    }
+.category {
+  min-width: 120px;
+  background: #fff;
+  padding: 1rem;
+  border-radius: 14px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,.06);
+}
 
-    .info button {
-      margin-top: 0.8rem;
-      width: 100%;
-      padding: 0.6rem;
-      border: none;
-      border-radius: 8px;
-      background: #e53935;
-      color: #fff;
-      cursor: pointer;
-      font-size: 0.95rem;
-    }
+/* PROMO */
+.promo img {
+  height: 140px;
+}
 
-    .info button:hover {
-      background: #d32f2f;
-    }
-
-    aside {
-      background: #fff;
-      padding: 1.2rem;
-      border-radius: 14px;
-      height: fit-content;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.08);
-      position: sticky;
-      top: 90px;
-    }
-
-    aside ul {
-      list-style: none;
-      margin: 1rem 0;
-    }
-
-    aside li {
-      padding: 0.5rem 0;
-      border-bottom: 1px solid #eee;
-      font-size: 0.95rem;
-    }
-
-    .checkout {
-      width: 100%;
-      padding: 0.7rem;
-      background: #2e7d32;
-      color: #fff;
-      border: none;
-      border-radius: 8px;
-      font-size: 1rem;
-      cursor: pointer;
-    }
-
-    .checkout:hover {
-      background: #256428;
-    }
-
-    @media (max-width: 900px) {
-      main {
-        grid-template-columns: 1fr;
-      }
-    }
-  </style>
+.categories::-webkit-scrollbar {
+  display: none;
+}
+</style>
 </head>
 
 <body>
 
+<!-- SPLASH COM "VÍDEO" -->
+<div id="splash">
+  <div class="splash-slide">
+    <img src="https://images.unsplash.com/photo-1528605248644-14dd04022da1">
+  </div>
+  <div class="splash-slide">
+    <img src="https://images.unsplash.com/photo-1550547660-d9450f859349">
+  </div>
+  <div class="splash-slide">
+    <img src="https://images.unsplash.com/photo-1528605105345-5344ea20e269">
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+
 <header>
   <h1>📍 PontoaPonto</h1>
-  <input type="text" placeholder="Buscar pratos ou categorias..." />
+  <input type="text" placeholder="Buscar restaurantes ou pratos">
 </header>
 
-<main>
-  <div>
+<div class="banner">
+  <img id="mainBanner">
+</div>
 
-    <!-- CHURRASCO -->
-    <section>
-      <h2>🍖 Churrasco</h2>
-      <div class="cards">
-        <div class="card">
-          <img src="https://images.unsplash.com/photo-1558030006-450675393462">
-          <div class="info">
-            <h3>Picanha na Brasa</h3>
-            <p>⭐ 4.9 • 40–50 min</p>
-            <button onclick="addToCart('Picanha na Brasa')">Adicionar</button>
-          </div>
-        </div>
+<div class="categories">
+  <div class="category">🍔<span>Lanches</span></div>
+  <div class="category">🍕<span>Pizza</span></div>
+  <div class="category">🍣<span>Japonesa</span></div>
+  <div class="category">🍛<span>Brasileira</span></div>
+  <div class="category">🍧<span>Açaí</span></div>
+</div>
 
-        <div class="card">
-          <img src="https://images.unsplash.com/photo-1529692236671-f1dcbe57a37a">
-          <div class="info">
-            <h3>Costela Premium</h3>
-            <p>⭐ 4.8 • 45–55 min</p>
-            <button onclick="addToCart('Costela Premium')">Adicionar</button>
-          </div>
-        </div>
-      </div>
-    </section>
+<div class="banner promo">
+  <img id="promoBanner">
+</div>
 
-    <!-- CAFÉ DA MANHÃ -->
-    <section>
-      <h2>☕ Café da Manhã</h2>
-      <div class="cards">
-        <div class="card">
-          <img src="https://images.unsplash.com/photo-1504754524776-8f4f37790ca0">
-          <div class="info">
-            <h3>Café Completo</h3>
-            <p>⭐ 4.7 • 15–25 min</p>
-            <button onclick="addToCart('Café Completo')">Adicionar</button>
-          </div>
-        </div>
-
-        <div class="card">
-          <img src="https://images.unsplash.com/photo-1550583724-b2692b85b150">
-          <div class="info">
-            <h3>Pão & Café</h3>
-            <p>⭐ 4.6 • 10–20 min</p>
-            <button onclick="addToCart('Pão & Café')">Adicionar</button>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- AÇAÍ -->
-    <section>
-      <h2>🍧 Açaí</h2>
-      <div class="cards">
-        <div class="card">
-          <img src="https://images.unsplash.com/photo-1626776876729-bab436b26c6b">
-          <div class="info">
-            <h3>Açaí Tradicional</h3>
-            <p>⭐ 4.9 • 15–25 min</p>
-            <button onclick="addToCart('Açaí Tradicional')">Adicionar</button>
-          </div>
-        </div>
-
-        <div class="card">
-          <img src="https://images.unsplash.com/photo-1612197527276-1c4a09cbb8b1">
-          <div class="info">
-            <h3>Açaí com Frutas</h3>
-            <p>⭐ 4.8 • 15–25 min</p>
-            <button onclick="addToCart('Açaí com Frutas')">Adicionar</button>
-          </div>
-        </div>
-      </div>
-    </section>
-
-  </div>
-
-  <!-- CARRINHO -->
-  <aside>
-    <h2>🛒 Carrinho</h2>
-    <ul id="cart-items"></ul>
-    <button class="checkout" onclick="checkout()">Finalizar pedido</button>
-  </aside>
-</main>
+</div>
 
 <script>
-  const cart = [];
+/* SPLASH 3s */
+setTimeout(() => {
+  document.getElementById("splash").style.display = "none";
+  document.getElementById("app").style.display = "block";
+}, 3000);
 
-  function addToCart(item) {
-    cart.push(item);
-    renderCart();
-  }
+/* BANNERS PRINCIPAIS */
+const mainBanners = [
+  "https://images.unsplash.com/photo-1550547660-d9450f859349",
+  "https://images.unsplash.com/photo-1548365328-8b849e6b3f41",
+  "https://images.unsplash.com/photo-1558030006-450675393462"
+];
 
-  function renderCart() {
-    const list = document.getElementById("cart-items");
-    list.innerHTML = "";
+let mainIndex = 0;
+const mainImg = document.getElementById("mainBanner");
+mainImg.src = mainBanners[0];
 
-    cart.forEach(item => {
-      const li = document.createElement("li");
-      li.textContent = item;
-      list.appendChild(li);
-    });
-  }
+setInterval(() => {
+  mainIndex = (mainIndex + 1) % mainBanners.length;
+  mainImg.src = mainBanners[mainIndex];
+}, 3000);
 
-  function checkout() {
-    if (cart.length === 0) {
-      alert("Seu carrinho está vazio!");
-      return;
-    }
-    alert("Pedido enviado com sucesso 🚀");
-    cart.length = 0;
-    renderCart();
-  }
+/* PROMO BANNERS */
+const promoBanners = [
+  "https://images.unsplash.com/photo-1600891964599-f61ba0e24092",
+  "https://images.unsplash.com/photo-1601924579268-2aa6a45c0f9b",
+  "https://images.unsplash.com/photo-1529333166437-7750a6dd5a70"
+];
+
+let promoIndex = 0;
+const promoImg = document.getElementById("promoBanner");
+promoImg.src = promoBanners[0];
+
+setInterval(() => {
+  promoIndex = (promoIndex + 1) % promoBanners.length;
+  promoImg.src = promoBanners[promoIndex];
+}, 3000);
 </script>
 
 </body>
